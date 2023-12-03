@@ -36,27 +36,27 @@ export const sumPartNumbers: Solution = (input: string): number => {
     data: splitInput as Matrix<typeof rows, typeof columns>,
   };
 
-  const gearLocations = findPotentialGearLocations(schematic);
+  const partLocations = findPartLocations(schematic);
 
   let sum = 0;
-  for (const gearLocation of gearLocations) {
-    const gearParts = findPartNumbers(gearLocation, schematic);
-    sum += getGearRatio(gearParts);
+  for (const partLocation of partLocations) {
+    for (const partNumber of findPartNumbers(partLocation, schematic)) {
+      sum += partNumber;
+    }
   }
 
   return sum;
 };
 
-function findPotentialGearLocations<
-  Rows extends number,
-  Columns extends number,
->(schematic: Schematic<Rows, Columns>) {
+function findPartLocations<Rows extends number, Columns extends number>(
+  schematic: Schematic<Rows, Columns>,
+) {
   let output: Array<Location> = [];
   for (let rowIndex = 0; rowIndex < schematic.rows; rowIndex++) {
     const row = schematic.data[rowIndex]!;
     for (let colIndex = 0; colIndex < row.length; colIndex++) {
       const char = row[colIndex]!;
-      if (isGearSymbol(char)) {
+      if (isPartSymbol(char)) {
         output.push({ row: rowIndex, column: colIndex });
       }
     }
@@ -68,6 +68,11 @@ function findPartNumbers<Rows extends number, Columns extends number>(
   partLocation: Location,
   schematic: Schematic<Rows, Columns>,
 ): ReadonlyArray<number> {
+  // Find locations with a number
+  // Coalesce horizontally
+  // Expand numbers
+  // Parse & return
+
   let numberLocations: Array<Location> = [];
   for (const neighbor of getNeighbors(partLocation, schematic)) {
     if (isNumber(schematic.data[neighbor.row]?.[neighbor.column])) {
@@ -97,13 +102,6 @@ function findPartNumbers<Rows extends number, Columns extends number>(
   ];
 
   return parseNumbers(numberStartingPoints, schematic);
-}
-
-function getGearRatio(partNumbers: ReadonlyArray<number>): number {
-  if (partNumbers.length !== 2) {
-    return 0;
-  }
-  return partNumbers[0]! * partNumbers[1]!;
 }
 
 function parseNumbers<Rows extends number, Columns extends number>(
@@ -139,6 +137,7 @@ function parseNumbers<Rows extends number, Columns extends number>(
     const number = Number(row.slice(leftBound, rightBound + 1));
     numbers.push(number);
   }
+  console.debug(numbers);
   return numbers;
 }
 
@@ -197,8 +196,8 @@ function pushIfInBounds<Rows extends number, Columns extends number>(
   return isValid ? [{ row, column }] : EMPTY_ARRAY;
 }
 
-function isGearSymbol(string: string): string is PartSymbol {
-  return string === "*";
+function isPartSymbol(string: string): string is PartSymbol {
+  return isCharacter(string) && string !== "." && Number.isNaN(Number(string));
 }
 
 function isCharacter(string: string): string is Character {
