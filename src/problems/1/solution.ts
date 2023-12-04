@@ -34,7 +34,7 @@ const numStrings = new RegExp(
 );
 
 export function sumCalibration(input: string) {
-  fs.writeFileSync("output", "");
+  fs.writeFileSync("output.temp", "");
   const lines = input.split("\n");
 
   let sum = 0;
@@ -58,7 +58,7 @@ export function sumCalibration(input: string) {
     sum += 10 * firstNum + lastNum;
 
     fs.appendFileSync(
-      "output",
+      "output.temp",
       `${line}: ${firstNumString} ${firstNum} ${lastNumString} ${lastNum} - ${nums}\n`,
     );
   }

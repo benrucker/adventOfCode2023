@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "main": "ts-node src/index.ts"
+    "main": "tsx src/index.ts"
   },
   "author": "",
   "license": "ISC",
