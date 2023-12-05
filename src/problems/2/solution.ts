@@ -1,5 +1,6 @@
 import { Solution } from "../../types/Solution";
 import { Mutable } from "../../types/utility/Mutable";
+import { splitOnce } from "../../utils/SplitOnce";
 
 const ROUND_DELIM = "; ";
 const PULL_DELIM = ", ";
@@ -92,17 +93,5 @@ function parseRound(pullStrings: ReadonlyArray<PullString>): Round {
   }
   return pull;
 }
-
-function splitOnce<T extends string, D extends string>(
-  string: T,
-  delimiter: D,
-) {
-  return string.split(delimiter, 2) as SplitString<T, D>;
-}
-
-type SplitString<
-  T extends string,
-  D extends string,
-> = T extends `${infer Prefix}${D}${infer Postfix}` ? [Prefix, Postfix] : never;
 
 export default countValidGames;
