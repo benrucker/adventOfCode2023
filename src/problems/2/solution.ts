@@ -1,6 +1,6 @@
 import { Solution } from "../../types/Solution";
 import { Mutable } from "../../types/utility/Mutable";
-import { splitOnce } from "../../utils/SplitOnce";
+import { splitOnce } from "../../utils/splitOnce";
 
 const ROUND_DELIM = "; ";
 const PULL_DELIM = ", ";

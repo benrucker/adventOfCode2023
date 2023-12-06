@@ -1,5 +1,5 @@
 import { Solution } from "../../types/Solution";
-import { splitOnce } from "../../utils/SplitOnce";
+import { splitOnce } from "../../utils/splitOnce";
 
 type CardString = `Card ${string}${number}: ${string} | ${string}`;
 
