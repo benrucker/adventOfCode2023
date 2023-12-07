@@ -1,5 +1,5 @@
 import { Solution } from "../../types/Solution";
-import { split } from "../../utils/split";
+import { splitOnce } from "../../utils/splitOnce";
 
 type CardString = `Card ${string}${number}: ${string} | ${string}`;
 
@@ -12,32 +12,28 @@ const countWinningPoints: Solution = (input: string): number => {
   const cardStrings = input.split("\n") as ReadonlyArray<CardString>;
   const cards = parseCards(cardStrings);
 
-  const cardCounts: Array<number> = Array(cards.length).fill(1);
-
-  for (let i = 0; i < cards.length; i++) {
-    const card = cards[i]!;
-    const { winningNumbers, drawnNumbers } = card;
-    const countOfCurrentCard = cardCounts[i]!;
-
+  let sum = 0;
+  for (const { winningNumbers, drawnNumbers } of cards) {
     let numDrawnWinners = 0;
     for (const drawnNumber of drawnNumbers) {
       if (winningNumbers.has(drawnNumber)) {
         numDrawnWinners += 1;
       }
     }
-
-    for (let j = 0; j < numDrawnWinners; j++) {
-      cardCounts[i + j + 1] += countOfCurrentCard;
+    if (numDrawnWinners > 0) {
+      sum += 2 ** (numDrawnWinners - 1);
     }
   }
-
-  return cardCounts.reduce((total, count) => total + count, 0);
+  return sum;
 };
 
 function parseCards(cardStrings: ReadonlyArray<CardString>) {
   return cardStrings.map((cardString): Card => {
-    const noPrefix = split(cardString, ": ")[1];
-    const [winningNumbersString, drawnNumbersString] = split(noPrefix, " | ");
+    const noPrefix = splitOnce(cardString, ": ")[1];
+    const [winningNumbersString, drawnNumbersString] = splitOnce(
+      noPrefix,
+      " | ",
+    );
     return {
       winningNumbers: new Set(parseNumbers(winningNumbersString)),
       drawnNumbers: parseNumbers(drawnNumbersString),
