@@ -5,13 +5,29 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch via NPM",
+            "name": "Run solution",
             "request": "launch",
             "runtimeArgs": [
                 "run",
                 "main",
                 "--",
                 "${relativeFileDirname}"
+            ],
+            "runtimeExecutable": "npm",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "name": "Run demo",
+            "request": "launch",
+            "runtimeArgs": [
+                "run",
+                "main",
+                "--",
+                "${relativeFileDirname}",
+                "demo"
             ],
             "runtimeExecutable": "npm",
             "skipFiles": [

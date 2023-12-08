@@ -1,4 +1,5 @@
 import { Solution } from "../../types/Solution";
+import { parseNumbers } from "../../utils/parseNumbers";
 import { split } from "../../utils/split";
 
 type CardString = `Card ${string}${number}: ${string} | ${string}`;
@@ -43,13 +44,6 @@ function parseCards(cardStrings: ReadonlyArray<CardString>) {
       drawnNumbers: parseNumbers(drawnNumbersString),
     };
   });
-}
-
-function parseNumbers(numbersString: string) {
-  return numbersString
-    .split(" ")
-    .filter((string) => string.length > 0)
-    .map((maybeNumber) => Number(maybeNumber));
 }
 
 export default countWinningPoints;
